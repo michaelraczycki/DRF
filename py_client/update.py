@@ -8,5 +8,5 @@ data = {
     "price": 1500.99,
 }
 
-get_response = requests.put(endpoint, json = data)
+get_response = requests.put(endpoint, json=data)
 print(get_response.json())

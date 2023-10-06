@@ -71,3 +71,39 @@ def product_alt_view(request, pk=None, *args, **kwargs):
             serializer.save(content=content)
             return Response(serializer.data)
         return Response(serializer.errors)
+
+
+class ProductMixinView(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    generics.GenericAPIView,
+    mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.CreateModelMixin,
+):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = "pk"
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        if pk is not None:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+    def perform_create(self, serializer):
+        # serializer.save(user=self.request.user)
+        title = serializer.validated_data.get("title")
+        content = serializer.validated_data.get("content") or None
+        if content is None:
+            content = title
+        serializer.save(content=content)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
