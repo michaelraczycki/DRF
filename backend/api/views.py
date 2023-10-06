@@ -1,6 +1,5 @@
 from products.models import Product
 from products.serializers import ProductSerializer
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
