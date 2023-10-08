@@ -9,12 +9,14 @@ class ProductSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name="product-detail", lookup_field="pk"
     )
+    email = serializers.EmailField(write_only=True, required=False)
 
     class Meta:
         model = Product
         fields = [
             "url",
             "edit_url",
+            "email",
             "pk",
             "id",
             "title",
